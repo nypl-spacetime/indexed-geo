@@ -1,0 +1,20 @@
+{
+  "name": "indexed-geo",
+  "version": "0.0.1",
+  "description": "Indexed geospatial functions using rbush and Turf",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard"
+  },
+  "author": "Bert Spaan",
+  "license": "MIT",
+  "dependencies": {
+    "@turf/bbox": "^3.7.3",
+    "@turf/intersect": "^3.7.3",
+    "rbush": "^2.0.1",
+    "rbush-knn": "^2.0.0"
+  },
+  "devDependencies": {
+    "standard": "^9.0.2"
+  }
+}
