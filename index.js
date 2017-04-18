@@ -2,7 +2,7 @@ const rbush = require('rbush')
 const knn = require('rbush-knn')
 const turf = {
   bbox: require('@turf/bbox'),
-  intersect: require('@turf/intersect')
+  inside: require('@turf/inside')
 }
 
 module.exports = function () {
@@ -34,7 +34,6 @@ module.exports = function () {
     }
   }
 
-  // TODO: handle JTS errors
   function nearest (point, k, filterFn) {
     checkTree()
 
@@ -44,8 +43,7 @@ module.exports = function () {
     }
   }
 
-  // TODO: handle JTS errors
-  function intersects (point) {
+  function inside (point) {
     checkTree()
 
     if (tree) {
@@ -57,14 +55,14 @@ module.exports = function () {
           maxY: point.coordinates[1]
         })
         .map((result) => result.feature)
-        .filter((feature) => turf.intersect(point, feature))
+        .filter((feature) => turf.inside(point, feature))
     }
   }
 
   return {
     index,
     nearest,
-    intersects
+    inside
   }
 }
 

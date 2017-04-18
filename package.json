@@ -1,6 +1,6 @@
 {
   "name": "indexed-geo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Indexed geospatial functions using rbush and Turf",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@turf/bbox": "^3.7.3",
-    "@turf/intersect": "^3.7.3",
+    "@turf/inside": "^3.7.3",
     "rbush": "^2.0.1",
     "rbush-knn": "^2.0.0"
   },

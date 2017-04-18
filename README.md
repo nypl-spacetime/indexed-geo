@@ -36,7 +36,7 @@ const results = indexedGeo.intersects(point)
 
 Indexes GeoJSON object.
 
-### `intersects (point)`
+### `inside (point)`
 
 Finds all indexed objects which intersect `point`.
 
