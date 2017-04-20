@@ -37,26 +37,22 @@ module.exports = function () {
   function nearest (point, k, filterFn) {
     checkTree()
 
-    if (tree) {
-      return knn(tree, point.coordinates[0], point.coordinates[1], k, filterFn)
-        .map((result) => result.feature)
-    }
+    return knn(tree, point.coordinates[0], point.coordinates[1], k, filterFn)
+      .map((result) => result.feature)
   }
 
   function inside (point) {
     checkTree()
 
-    if (tree) {
-      return tree
-        .search({
-          minX: point.coordinates[0],
-          minY: point.coordinates[1],
-          maxX: point.coordinates[0],
-          maxY: point.coordinates[1]
-        })
-        .map((result) => result.feature)
-        .filter((feature) => turf.inside(point, feature))
-    }
+    return tree
+      .search({
+        minX: point.coordinates[0],
+        minY: point.coordinates[1],
+        maxX: point.coordinates[0],
+        maxY: point.coordinates[1]
+      })
+      .map((result) => result.feature)
+      .filter((feature) => turf.inside(point, feature))
   }
 
   return {

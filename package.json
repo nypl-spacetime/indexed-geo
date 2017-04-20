@@ -1,6 +1,6 @@
 {
   "name": "indexed-geo",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Indexed geospatial functions using rbush and Turf",
   "main": "index.js",
   "scripts": {
