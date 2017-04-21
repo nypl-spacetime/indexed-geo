@@ -9,6 +9,14 @@ module.exports = function () {
   let tree
 
   function index (geojson) {
+    if (!geojson || geojson.type !== 'FeatureCollection' || !geojson.features) {
+      throw new Error('Expecting a GeoJSON FeatureCollection')
+    }
+
+    if (!geojson.features.length) {
+      throw new Error('FeatureCollection is empty; nothing to index')
+    }
+
     const treeSize = geojson.features.length
 
     tree = rbush(treeSize)
@@ -41,7 +49,7 @@ module.exports = function () {
       .map((result) => result.feature)
   }
 
-  function inside (point) {
+  function search (point) {
     checkTree()
 
     return tree
@@ -52,12 +60,17 @@ module.exports = function () {
         maxY: point.coordinates[1]
       })
       .map((result) => result.feature)
+  }
+
+  function inside (point) {
+    search(point)
       .filter((feature) => turf.inside(point, feature))
   }
 
   return {
     index,
     nearest,
+    search,
     inside
   }
 }
