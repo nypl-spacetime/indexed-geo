@@ -63,7 +63,7 @@ module.exports = function () {
   }
 
   function inside (point) {
-    search(point)
+    return search(point)
       .filter((feature) => turf.inside(point, feature))
   }
 
