@@ -2,56 +2,40 @@ const rbush = require('rbush')
 const knn = require('rbush-knn')
 const turf = {
   bbox: require('@turf/bbox'),
-  inside: require('@turf/inside')
+  booleanPointInPolygon: require('@turf/boolean-point-in-polygon')
+}
+
+function featureToItem (feature) {
+  const bbox = turf.bbox(feature)
+
+  return {
+    minX: bbox[0],
+    minY: bbox[1],
+    maxX: bbox[2],
+    maxY: bbox[3],
+    feature
+  }
 }
 
 module.exports = function () {
-  let tree
+  const tree = rbush()
 
   function index (geojson) {
-    if (!geojson || geojson.type !== 'FeatureCollection' || !geojson.features) {
-      throw new Error('Expecting a GeoJSON FeatureCollection')
-    }
-
-    if (!geojson.features.length) {
-      throw new Error('FeatureCollection is empty; nothing to index')
-    }
-
-    const treeSize = geojson.features.length
-
-    tree = rbush(treeSize)
-    const treeItems = geojson.features
-      .map((feature) => ({
-        bbox: turf.bbox(feature),
-        feature
-      }))
-      .map((item) => ({
-        minX: item.bbox[0],
-        minY: item.bbox[1],
-        maxX: item.bbox[2],
-        maxY: item.bbox[3],
-        feature: item.feature
-      }))
-
-    tree.load(treeItems)
-  }
-
-  function checkTree () {
-    if (!tree) {
-      throw new Error('Geospatial index is empty; index GeoJSON data before calling this function')
+    if (geojson.type === 'FeatureCollection' && geojson.features) {
+      tree.load(geojson.features.map(featureToItem))
+    } else if (geojson.type === 'Feature') {
+      tree.insert(featureToItem(geojson))
+    } else {
+      throw new Error('Expecting a GeoJSON FeatureCollection or a GeoJSON Feature')
     }
   }
 
   function nearest (point, k, filterFn) {
-    checkTree()
-
     return knn(tree, point.coordinates[0], point.coordinates[1], k, filterFn)
       .map((result) => result.feature)
   }
 
   function search (point) {
-    checkTree()
-
     return tree
       .search({
         minX: point.coordinates[0],
@@ -64,7 +48,7 @@ module.exports = function () {
 
   function inside (point) {
     return search(point)
-      .filter((feature) => turf.inside(point, feature))
+      .filter((feature) => turf.booleanPointInPolygon(point, feature))
   }
 
   return {
@@ -74,4 +58,3 @@ module.exports = function () {
     inside
   }
 }
-

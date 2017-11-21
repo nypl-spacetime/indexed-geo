@@ -1,20 +1,22 @@
 {
   "name": "indexed-geo",
-  "version": "0.0.5",
-  "description": "Indexed geospatial functions using rbush and Turf",
+  "version": "0.1.0",
+  "description": "Indexed geospatial functions using RBush and Turf",
   "main": "index.js",
   "scripts": {
-    "test": "standard"
+    "test": "npm run lint && tap test/*.js",
+    "lint": "standard index.js test/index.js"
   },
   "author": "Bert Spaan",
   "license": "MIT",
   "dependencies": {
-    "@turf/bbox": "^3.7.3",
-    "@turf/inside": "^3.7.3",
+    "@turf/bbox": "^5.0.4",
+    "@turf/boolean-point-in-polygon": "^5.0.4",
     "rbush": "^2.0.1",
     "rbush-knn": "^2.0.0"
   },
   "devDependencies": {
-    "standard": "^9.0.2"
+    "standard": "^9.0.2",
+    "tap": "^10.7.3"
   }
 }
